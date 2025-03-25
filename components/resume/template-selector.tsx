@@ -1,21 +1,26 @@
 "use client"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import React, { useMemo } from "react"
 
 interface TemplateSelectorProps {
   selectedTemplate: string;
   onSelectTemplate: (template: string) => void;
 }
 
-export function TemplateSelector({ selectedTemplate, onSelectTemplate }: TemplateSelectorProps) {
-  const templates = [
+export const TemplateSelector = React.memo(function TemplateSelector({ 
+  selectedTemplate, 
+  onSelectTemplate 
+}: TemplateSelectorProps) {
+  // Memoize the templates array so it doesn't cause re-renders
+  const templates = useMemo(() => [
     { id: "modern", name: "Modern" },
     { id: "classic", name: "Classic" },
     { id: "creative", name: "Creative" },
     { id: "minimal", name: "Minimal" },
     { id: "professional", name: "Professional" },
     { id: "executive", name: "Executive" },
-  ]
+  ], []);
 
   return (
     <RadioGroup
@@ -47,5 +52,5 @@ export function TemplateSelector({ selectedTemplate, onSelectTemplate }: Templat
       ))}
     </RadioGroup>
   )
-}
+})
 

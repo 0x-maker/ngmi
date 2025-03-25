@@ -1,29 +1,69 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, FormEvent, ChangeEvent } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { RequestSuggestionButton, ContentSuggestionCard } from '@/components/ai/content-suggestion'
+import { useAI } from '@/hooks/useAI'
+import { ContentSuggestion } from '@/lib/ai-service'
 
-export function PersonalInfoForm({ data, updateData }) {
-  const [formData, setFormData] = useState(data)
+interface PersonalInfo {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  summary: string;
+  website: string;
+  linkedin: string;
+}
+
+interface PersonalInfoFormProps {
+  data: PersonalInfo;
+  updateData: (data: PersonalInfo) => void;
+}
+
+export function PersonalInfoForm({ data, updateData }: PersonalInfoFormProps) {
+  const [formData, setFormData] = useState<PersonalInfo>(data)
+  const [summarySuggestion, setSummarySuggestion] = useState<ContentSuggestion | null>(null)
+  const { getContentSuggestions, isLoadingSuggestions } = useAI()
 
   useEffect(() => {
     setFormData(data)
   }, [data])
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
+    setFormData((prev: PersonalInfo) => ({
       ...prev,
       [name]: value,
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     updateData(formData)
+  }
+
+  const handleRequestSummarySuggestion = async () => {
+    if (!formData.summary.trim()) {
+      // Can't suggest improvements for empty text
+      return
+    }
+    
+    const result = await getContentSuggestions(formData.summary, 'summary')
+    if (result) {
+      setSummarySuggestion(result)
+    }
+  }
+  
+  const handleAcceptSuggestion = (improved: string) => {
+    setFormData((prev: PersonalInfo) => ({
+      ...prev,
+      summary: improved
+    }))
+    setSummarySuggestion(null)
   }
 
   return (
@@ -86,6 +126,21 @@ export function PersonalInfoForm({ data, updateData }) {
           placeholder="Brief overview of your professional background and key strengths"
           className="min-h-[100px]"
         />
+        <div className="flex justify-end mt-1">
+          <RequestSuggestionButton
+            onClick={handleRequestSummarySuggestion}
+            loading={isLoadingSuggestions}
+          />
+        </div>
+        
+        {summarySuggestion && (
+          <ContentSuggestionCard
+            suggestion={summarySuggestion}
+            onAccept={handleAcceptSuggestion}
+            onReject={() => setSummarySuggestion(null)}
+            loading={isLoadingSuggestions}
+          />
+        )}
       </div>
       <Button type="submit">Save</Button>
     </form>

@@ -25,3 +25,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+INTEGRATION.md
+SUMMARY.md
+AI-FEATURES-PLAN.md

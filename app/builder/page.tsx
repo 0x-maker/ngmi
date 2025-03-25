@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast"
 import { Download, Italic } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Link from "next/link"
+import { loadResumeData, saveResumeData } from "@/lib/local-storage"
 
 // Define TypeScript interfaces for our data
 interface PersonalInfo {
@@ -25,6 +26,8 @@ interface PersonalInfo {
   summary: string;
   website: string;
   linkedin: string;
+  location?: string;
+  title?: string;
 }
 
 interface Experience {
@@ -42,7 +45,7 @@ interface Education {
   field: string;
   startDate: string;
   endDate: string;
-  description: string;
+  description?: string;
 }
 
 interface Skill {
@@ -54,10 +57,11 @@ interface Project {
   name: string;
   description: string;
   technologies: string;
-  link: string;
+  link?: string;
 }
 
-interface ResumeData {
+// Type for the component's internal state
+interface ResumeBuilderState {
   personal: PersonalInfo;
   experience: Experience[];
   education: Education[];
@@ -70,7 +74,7 @@ export default function ResumeBuilder() {
   const { toast } = useToast()
   const [activeTab, setActiveTab] = useState("personal")
   const resumeRef = useRef<HTMLDivElement>(null)
-  const [resumeData, setResumeData] = useState<ResumeData>({
+  const [resumeData, setResumeData] = useState<ResumeBuilderState>({
     personal: {
       name: "",
       email: "",
@@ -87,12 +91,72 @@ export default function ResumeBuilder() {
     template: "modern",
   })
 
-  const updateResumeData = (section: keyof ResumeData, data: any) => {
-    setResumeData((prev) => ({
-      ...prev,
-      [section]: data,
-    }))
-  }
+  // Load resume data from localStorage on initial render
+  useEffect(() => {
+    const savedData = loadResumeData()
+    if (savedData) {
+      // Convert the ResumeData from localStorage to ResumeBuilderState format
+      const compatibleData: ResumeBuilderState = {
+        personal: {
+          name: savedData.personal.name || "",
+          email: savedData.personal.email || "",
+          phone: savedData.personal.phone || "",
+          address: savedData.personal.address || "",
+          summary: savedData.personal.summary || "",
+          website: savedData.personal.website || "",
+          linkedin: savedData.personal.linkedin || "",
+          location: savedData.personal.location,
+          title: savedData.personal.title,
+        },
+        experience: savedData.experience || [],
+        education: savedData.education || [],
+        skills: Array.isArray(savedData.skills) ? 
+          (typeof savedData.skills[0] === 'string' 
+            ? (savedData.skills as string[]).map(skill => ({ name: skill, level: "" }))
+            : (savedData.skills as Skill[])) 
+          : [],
+        projects: savedData.projects || [],
+        template: savedData.template || "modern",
+      }
+      
+      setResumeData(compatibleData)
+    }
+  }, [])
+
+  // Memoize the updateResumeData function
+  const updateResumeData = useCallback((section: keyof ResumeBuilderState, data: any) => {
+    setResumeData((prev) => {
+      const updatedData = {
+        ...prev,
+        [section]: data,
+      }
+      
+      // Only save to localStorage if this isn't a template update
+      // or if it's explicitly initiated (not during component initialization)
+      if (section !== "template" || (section === "template" && typeof data === "string")) {
+        // Convert ResumeBuilderState to ResumeData format for localStorage
+        const storageData = {
+          personal: {
+            ...updatedData.personal,
+            location: updatedData.personal.location || updatedData.personal.address,
+            title: updatedData.personal.title || updatedData.personal.name,
+          },
+          experience: updatedData.experience,
+          education: updatedData.education,
+          skills: Array.isArray(updatedData.skills) && updatedData.skills.length > 0
+            ? updatedData.skills.map(skill => skill.name)
+            : [],
+          projects: updatedData.projects,
+          template: updatedData.template,
+        }
+        
+        // Save to localStorage whenever data changes
+        saveResumeData(storageData)
+      }
+      
+      return updatedData
+    })
+  }, [])
 
   const handleExportPDF = async () => {
     toast({
@@ -141,6 +205,11 @@ export default function ResumeBuilder() {
       })
     }
   }
+
+  // Memoize the template selection handler
+  const handleTemplateSelection = useCallback((template: string) => {
+    updateResumeData("template", template)
+  }, [updateResumeData]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -210,12 +279,27 @@ export default function ResumeBuilder() {
                 <h2 className="mb-4 text-xl font-bold">Template</h2>
                 <TemplateSelector
                   selectedTemplate={resumeData.template}
-                  onSelectTemplate={(template: string) => updateResumeData("template", template)}
+                  onSelectTemplate={handleTemplateSelection}
                 />
               </div>
-              <Button className="mt-4 w-full gap-2" size="lg" onClick={handleExportPDF}>
-                <Download className="h-4 w-4" /> Export as PDF
-              </Button>
+              <div className="flex justify-between">
+              
+                <div className="space-x-3">
+                  <br></br>
+                  <button
+                    onClick={handleExportPDF}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    Export PDF
+                  </button>
+                  <Link
+                    href="/review"
+                    className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  >
+                    AI Review
+                  </Link>
+                </div>
+              </div>
             </div>
             <div className="hidden lg:block lg:sticky lg:top-24 lg:h-fit">
               <h2 className="mb-4 text-xl font-bold">Preview</h2>

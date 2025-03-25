@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
+import Image from "next/image"
 
 export default function Home() {
   return (
@@ -18,8 +19,14 @@ export default function Home() {
             <Link href="/templates">
               <Button variant="outline">Templates</Button>
             </Link>
-            <Link href="/builder">
-              <Button>Get Started</Button>
+            <Link href="/review" className="text-sm font-medium text-purple-600 hover:underline dark:text-purple-400">
+              AI Review
+            </Link>
+            <Link
+              href="/builder"
+              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-700 dark:hover:bg-blue-600"
+            >
+              Get Started
             </Link>
           </div>
         </div>
@@ -89,7 +96,7 @@ export default function Home() {
                 <div className="space-y-2">
                   <h3 className="font-bold">ATS-Friendly</h3>
                   <p className="text-sm text-muted-foreground">
-                    Our templates are designed to pass through Applicant Tracking Systems.
+                    templates are designed to pass through Applicant Tracking Systems.
                   </p>
                 </div>
               </div>

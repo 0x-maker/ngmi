@@ -8,6 +8,7 @@
 
 <div align="center">
   <a href="#-features">Features</a> •
+  <a href="#-ai-powered-features">AI Features</a> •
   <a href="#-live-demo">Live Demo</a> •
   <a href="#-getting-started">Getting Started</a> •
   <a href="#-tech-stack">Tech Stack</a> •
@@ -30,6 +31,16 @@
 - 🌓 **Dark Mode** - Built-in dark mode for comfortable editing at any time of day
 - 🚀 **Blazingly Fast** - Built with Next.js for lightning-fast performance
 
+## 🧠 AI-Powered Features
+
+Our new AI integration helps you create better resumes with intelligent assistance:
+
+- ✍️ **Smart Content Suggestions** - Get AI-powered suggestions to improve clarity, impact, and professionalism in each section
+- 🎯 **ATS Keyword Optimization** - Analyze job descriptions to identify and incorporate important keywords for better ATS matching
+- 🏆 **Achievement Formatter** - Transform basic job descriptions into impressive achievement-oriented bullet points
+- 📊 **Comprehensive Resume Analysis** - Receive an overall score and detailed feedback on your resume's strengths and weaknesses
+- 📝 **Personalized Improvement Suggestions** - Get tailored suggestions for enhancing each section of your resume
+
 ## 🌐 Live Demo
 
 Try it out now at [youarejobless.com](https://youarejobless.com)
@@ -40,6 +51,7 @@ Try it out now at [youarejobless.com](https://youarejobless.com)
 
 - Node.js 18+ (we recommend using LTS)
 - npm, yarn, or pnpm
+- API keys for AI providers (OpenAI, Anthropic, Google AI, or Deepseek)
 
 ### Installation
 
@@ -58,7 +70,11 @@ Try it out now at [youarejobless.com](https://youarejobless.com)
    pnpm install
    ```
 
-3. Run the development server:
+3. Set up environment variables:
+   - Copy `.env.example` to `.env.local`
+   - Add your API keys for the AI providers you want to use
+
+4. Run the development server:
    ```bash
    npm run dev
    # or
@@ -67,19 +83,22 @@ Try it out now at [youarejobless.com](https://youarejobless.com)
    pnpm dev
    ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+5. Open your browser and navigate to `http://localhost:3000`
 
 ## 🛠️ Tech Stack
 
 "You Are Jobless" is built using cutting-edge technologies:
 
-- **Next.js 15** - React framework with App Router
-- **React 19** - UI component library
+- **Next.js** - React framework with App Router
+- **React** - UI component library
 - **TypeScript** - Type-safe code
 - **Tailwind CSS** - Utility-first CSS framework
 - **Radix UI** - Unstyled, accessible components
 - **html2pdf.js** - PDF generation
 - **next-themes** - Dark mode support
+- **OpenAI API** - AI-powered content suggestions and analysis
+- **Anthropic Claude API** - Alternative AI provider
+- **Zod** - Schema validation for AI responses
 
 ## 🤝 Contributing
 
@@ -106,6 +125,8 @@ If you found this project helpful, please consider:
 ## 🙏 Acknowledgements
 
 - [shadcn/ui](https://ui.shadcn.com/) - UI component system
+- [OpenAI](https://openai.com/) - AI provider for content suggestions
+- [Anthropic](https://www.anthropic.com/) - Alternative AI provider
 - All contributors who have helped make this project better!
 
 ---
