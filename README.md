@@ -43,7 +43,7 @@ Our new AI integration helps you create better resumes with intelligent assistan
 
 ## 🌐 Live Demo
 
-Try it out now at [youarejobless.com](https://youarejobless.com)
+Try it out now at [0xjobless.vercel.app](https://0xjobless.vercel.app)
 
 ## 🚀 Getting Started
 
