@@ -1,4 +1,4 @@
-# 💼 You Are Jobless - Resume Builder
+#  You Are Jobless 🗿
 
 <div align="center">
   <img src="https://storage.verity.dev/storage/NGMI3.png" alt="You Are Jobless Logo" width="120" />
