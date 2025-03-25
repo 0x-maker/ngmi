@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Github } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Image from "next/image"
 
@@ -114,6 +114,14 @@ export default function Home() {
         <div className="container mx-auto px-4 flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 text-sm text-muted-foreground">
             <span>© {new Date().getFullYear()}</span>
+            <a 
+              href="https://github.com/0x-maker/ngmi" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center hover:opacity-80 transition-opacity ml-2"
+            >
+              <Github className="h-5 w-5" />
+            </a>
             <img src="https://storage.verity.dev/storage/NGMI3.png" alt="NGMI" className="h-8 w-8 inline-block" />
             <span>Maintained by <a href="https://praetorian.netlify.app/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center hover:opacity-80 transition-opacity">ᯅ ∴</a></span>
             <a 
@@ -124,6 +132,7 @@ export default function Home() {
             >
               <img src="https://storage.verity.dev/storage/prae.png" alt="Praetorian" className="h-5 w-5 inline-block" />
             </a>
+           
             <span>All rights reserved.</span>
           </div>
         </div>
