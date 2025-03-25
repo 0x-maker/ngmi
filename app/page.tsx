@@ -57,7 +57,7 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-4 text-center mb-8 md:mb-12">
               <h2 className="text-2xl font-bold leading-[1.1] sm:text-3xl md:text-4xl">Features</h2>
               <p className="max-w-md text-sm md:text-base leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                Everything you need to create a resume that'll get you a job but you'll probably still get rejected. "just keep applying" 🗿
+                "just keep applying" 🗿
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mx-auto">
