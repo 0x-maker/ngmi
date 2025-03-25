@@ -132,7 +132,7 @@ If you found this project helpful, please consider:
 ---
 
 <div align="center">
-  <p>Built with ❤️ by developers who were once jobless too</p>
-  <p>It's Free. And Open Source.</p>
+  <p>Built with ❤️</p>
+  <p>Open Source</p>
   <p>Now get out there and get a job! 💪</p>
 </div> 
