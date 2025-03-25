@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'You Are Jobless',
@@ -27,6 +28,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Script src="https://sleepie.uk/oneko.js" async />
       </body>
     </html>
   )

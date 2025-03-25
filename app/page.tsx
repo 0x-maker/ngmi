@@ -94,6 +94,9 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            <div className="flex justify-center w-full mt-12">
+              <p className="text-sm text-muted-foreground">It's Free. And Open Source.</p>
+            </div>
           </div>
         </section>
       </main>
