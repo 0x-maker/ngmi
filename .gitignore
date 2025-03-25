@@ -28,3 +28,8 @@ next-env.d.ts
 INTEGRATION.md
 SUMMARY.md
 AI-FEATURES-PLAN.md
+
+# Make sure the test directory for pdf-parse is not ignored
+!test/
+!test/data/
+!test/data/05-versions-space.pdf

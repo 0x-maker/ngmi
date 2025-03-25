@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import pdfParse from 'pdf-parse';
+// Import directly from the module's main file to avoid triggering tests
+// @ts-ignore - No type definitions available for the specific import path
+import pdfParse from 'pdf-parse/lib/pdf-parse.js';
 
 export async function POST(request: NextRequest) {
   try {
