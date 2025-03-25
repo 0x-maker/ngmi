@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAI } from '@/hooks/useAI';
 import { KeywordAnalysis } from '@/lib/ai-service';
+import { Button } from '@/components/ui/button';
 
 interface KeywordOptimizationProps {
   resumeContent: string;
@@ -24,6 +25,15 @@ export function KeywordOptimization({
       setAnalysis(result);
       setShowSuggestions(true);
     }
+  };
+
+  const handleApplyAllSuggestions = () => {
+    if (!analysis?.suggestions) return;
+    
+    // Apply each suggestion one by one
+    analysis.suggestions.forEach(suggestion => {
+      onApplySuggestion(suggestion.section, suggestion.content);
+    });
   };
 
   return (
@@ -106,7 +116,17 @@ export function KeywordOptimization({
           </div>
           
           <div>
-            <h4 className="text-md font-medium mb-2">Suggested Improvements</h4>
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-md font-medium">Suggested Improvements</h4>
+              {analysis.suggestions.length > 0 && (
+                <Button
+                  onClick={handleApplyAllSuggestions}
+                  className="text-sm px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700"
+                >
+                  Apply All Suggestions
+                </Button>
+              )}
+            </div>
             <div className="space-y-3">
               {analysis.suggestions.map((suggestion, index) => (
                 <div

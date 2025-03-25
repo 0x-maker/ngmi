@@ -1,27 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAI } from '@/hooks/useAI';
 import { ResumeAnalysis } from '@/lib/ai-service';
+import { Button } from '@/components/ui/button';
 
 interface ResumeAnalyzerProps {
   resumeContent: string;
   onApplySuggestion: (section: string, suggestion: string) => void;
+  autoAnalyze?: boolean;
+  freshUpload?: boolean;
 }
 
 export function ResumeAnalyzer({
   resumeContent,
   onApplySuggestion,
+  autoAnalyze = false,
+  freshUpload = false
 }: ResumeAnalyzerProps) {
   const [targetRole, setTargetRole] = useState('');
   const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
   const [isAnalyzed, setIsAnalyzed] = useState(false);
   const { analyzeResume, isLoadingAnalysis, error } = useAI();
 
+  // Effect to auto-analyze when component mounts or when freshUpload changes to true
+  useEffect(() => {
+    if ((autoAnalyze || freshUpload) && resumeContent && !isAnalyzed && !isLoadingAnalysis) {
+      handleAnalyze();
+    }
+  }, [resumeContent, autoAnalyze, freshUpload]);
+
   const handleAnalyze = async () => {
+    if (!resumeContent.trim() || isLoadingAnalysis) return;
+    
     const result = await analyzeResume(resumeContent, targetRole || undefined);
     if (result) {
       setAnalysis(result);
       setIsAnalyzed(true);
     }
+  };
+
+  const handleApplyAllSuggestions = () => {
+    if (!analysis?.improvementSuggestions) return;
+    
+    // Apply each suggestion one by one
+    analysis.improvementSuggestions.forEach(suggestion => {
+      onApplySuggestion(suggestion.section, suggestion.suggestion);
+    });
   };
 
   const getPriorityColor = (priority: string) => {
@@ -155,7 +178,17 @@ export function ResumeAnalyzer({
           
           {/* Improvement Suggestions */}
           <div>
-            <h4 className="text-md font-medium mb-3">Suggested Improvements</h4>
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="text-md font-medium">Suggested Improvements</h4>
+              {analysis.improvementSuggestions.length > 0 && (
+                <Button
+                  onClick={handleApplyAllSuggestions}
+                  className="text-sm px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Apply All Suggestions
+                </Button>
+              )}
+            </div>
             <div className="space-y-3">
               {analysis.improvementSuggestions
                 .sort((a, b) => {

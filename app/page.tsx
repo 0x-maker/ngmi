@@ -19,6 +19,9 @@ export default function Home() {
             <Link href="/templates">
               <Button variant="outline">Templates</Button>
             </Link>
+            <Link href="/import-export" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">
+              Import
+            </Link>
             <Link href="/review" className="text-sm font-medium text-purple-600 hover:underline dark:text-purple-400">
               AI Review
             </Link>
@@ -35,7 +38,7 @@ export default function Home() {
         <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
           <div className="container flex flex-col items-center gap-4 text-center mx-auto px-4">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-              Create professional resumes in minutes
+              Create professional resumes in minutes 🗿
             </h1>
             <p className="max-w-md text-sm md:text-base leading-normal text-muted-foreground sm:text-lg sm:leading-8">
               Don't you think it's time you quit begging for whitelists and asking for "hey bro can you add me to the fnf chat?". stop it. get a job and come back and buy a ticket if you wanna play
@@ -54,7 +57,7 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-4 text-center mb-8 md:mb-12">
               <h2 className="text-2xl font-bold leading-[1.1] sm:text-3xl md:text-4xl">Features</h2>
               <p className="max-w-md text-sm md:text-base leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-                Everything you need to create a resume that'll get you a job but you'll probably still get rejected. "just keep applying"
+                Everything you need to create a resume that'll get you a job but you'll probably still get rejected. "just keep applying" 🗿
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mx-auto">
@@ -62,7 +65,7 @@ export default function Home() {
                 <div className="space-y-2">
                   <h3 className="font-bold">Multiple Templates</h3>
                   <p className="text-sm text-muted-foreground">
-                    Choose from a variety of professional templates to make your resume stand out.
+                    Choose from a variety of templates.
                   </p>
                 </div>
               </div>
@@ -74,8 +77,8 @@ export default function Home() {
               </div>
               <div className="relative overflow-hidden rounded-lg border bg-background p-4 md:p-6">
                 <div className="space-y-2">
-                  <h3 className="font-bold">PDF Export</h3>
-                  <p className="text-sm text-muted-foreground">Export your resume as a PDF to share with employers.</p>
+                  <h3 className="font-bold">Import & Export</h3>
+                  <p className="text-sm text-muted-foreground">Upload existing resumes and export in various formats (PDF, DOCX, MD).</p>
                 </div>
               </div>
               <div className="relative overflow-hidden rounded-lg border bg-background p-4 md:p-6">

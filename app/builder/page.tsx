@@ -12,10 +12,18 @@ import { ProjectsForm } from "@/components/resume/projects-form"
 import { TemplateSelector } from "@/components/resume/template-selector"
 import { ResumePreview } from "@/components/resume/resume-preview"
 import { useToast } from "@/hooks/use-toast"
-import { Download, Italic } from "lucide-react"
+import { Download, Italic, ChevronDown, Upload } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Link from "next/link"
 import { loadResumeData, saveResumeData } from "@/lib/local-storage"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
+import { exportResumeToPDF, exportResumeToDocx, exportResumeToMarkdown } from '@/lib/file-service'
 
 // Define TypeScript interfaces for our data
 interface PersonalInfo {
@@ -201,20 +209,201 @@ export default function ResumeBuilder() {
       console.error("PDF generation error:", error)
       toast({
         title: "Error",
-        description: "There was a problem generating your PDF. Please try again.",
+        description: "Failed to generate PDF. Please try again.",
       })
     }
   }
 
-  // Memoize the template selection handler
+  // Add handlers for other export formats
+  const handleExportDOCX = async () => {
+    toast({
+      title: "Exporting DOCX",
+      description: "Your resume is being prepared for download.",
+    });
+    
+    try {
+      // Convert resumeData to the expected format
+      const exportData = {
+        ...resumeData,
+        personal: {
+          ...resumeData.personal,
+          location: resumeData.personal.location || resumeData.personal.address || '',
+          title: resumeData.personal.title || resumeData.personal.name || '',
+        },
+        skills: Array.isArray(resumeData.skills) 
+          ? resumeData.skills.map(skill => skill.name) 
+          : []
+      };
+      
+      await exportResumeToDocx(exportData);
+      toast({
+        title: "DOCX Ready",
+        description: "Your resume has been exported successfully.",
+      });
+    } catch (error) {
+      console.error("DOCX generation error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate DOCX. Please try again.",
+      });
+    }
+  };
+
+  const handleExportMD = () => {
+    toast({
+      title: "Exporting Markdown",
+      description: "Your resume is being prepared for download.",
+    });
+    
+    try {
+      // Convert resumeData to the expected format
+      const exportData = {
+        ...resumeData,
+        personal: {
+          ...resumeData.personal,
+          location: resumeData.personal.location || resumeData.personal.address || '',
+          title: resumeData.personal.title || resumeData.personal.name || '',
+        },
+        skills: Array.isArray(resumeData.skills) 
+          ? resumeData.skills.map(skill => skill.name) 
+          : []
+      };
+      
+      exportResumeToMarkdown(exportData);
+      toast({
+        title: "Markdown Ready",
+        description: "Your resume has been exported successfully.",
+      });
+    } catch (error) {
+      console.error("Markdown generation error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate Markdown. Please try again.",
+      });
+    }
+  };
+
+  // Add JSON export handler
+  const handleExportJSON = () => {
+    toast({
+      title: "Exporting JSON",
+      description: "Your resume is being prepared for download.",
+    });
+    
+    try {
+      // Prepare data as JSON string
+      const jsonData = JSON.stringify(resumeData, null, 2);
+      
+      // Create and trigger download
+      const blob = new Blob([jsonData], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${resumeData.personal.name || 'resume'}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "JSON Ready",
+        description: "Your resume has been exported as JSON successfully.",
+      });
+    } catch (error) {
+      console.error("JSON generation error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate JSON. Please try again.",
+      });
+    }
+  };
+
+  // Add plain text export handler
+  const handleExportTXT = () => {
+    toast({
+      title: "Exporting TXT",
+      description: "Your resume is being prepared for download.",
+    });
+    
+    try {
+      // Format resume as plain text
+      const { personal, experience, education, skills, projects } = resumeData;
+      
+      let textContent = `# ${personal.name}\n`;
+      textContent += `${personal.email} | ${personal.phone} | ${personal.address}\n`;
+      if (personal.website) textContent += `Website: ${personal.website}\n`;
+      if (personal.linkedin) textContent += `LinkedIn: ${personal.linkedin}\n\n`;
+      
+      textContent += `## Summary\n${personal.summary}\n\n`;
+      
+      if (experience.length) {
+        textContent += "## Experience\n";
+        experience.forEach(exp => {
+          textContent += `${exp.position} at ${exp.company}, ${exp.location}\n`;
+          textContent += `${exp.startDate} - ${exp.endDate}\n`;
+          textContent += `${exp.description}\n\n`;
+        });
+      }
+      
+      if (education.length) {
+        textContent += "## Education\n";
+        education.forEach(edu => {
+          textContent += `${edu.degree} in ${edu.field}, ${edu.institution}\n`;
+          textContent += `${edu.startDate} - ${edu.endDate}\n`;
+          if (edu.description) textContent += `${edu.description}\n`;
+          textContent += "\n";
+        });
+      }
+      
+      if (skills.length) {
+        textContent += "## Skills\n";
+        textContent += skills.map(skill => skill.name).join(", ") + "\n\n";
+      }
+      
+      if (projects.length) {
+        textContent += "## Projects\n";
+        projects.forEach(proj => {
+          textContent += `${proj.name}\n`;
+          textContent += `${proj.description}\n`;
+          textContent += `Technologies: ${proj.technologies}\n`;
+          if (proj.link) textContent += `Link: ${proj.link}\n`;
+          textContent += "\n";
+        });
+      }
+      
+      // Create and trigger download
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${personal.name || 'resume'}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "TXT Ready",
+        description: "Your resume has been exported as plain text successfully.",
+      });
+    } catch (error) {
+      console.error("TXT generation error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate TXT. Please try again.",
+      });
+    }
+  };
+
+  // Memoize the handleTemplateSelection function
   const handleTemplateSelection = useCallback((template: string) => {
     updateResumeData("template", template)
-  }, [updateResumeData]);
+  }, [updateResumeData])
 
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4 flex h-16 items-center justify-between">
+        <div className="container flex h-16 items-center justify-between">
           <div className="flex">
             <Link href="/" className="flex items-center space-x-2">
               <img src="https://storage.verity.dev/storage/NGMI3.png" alt="ResumeBuilder" height={100} width={100} />
@@ -225,6 +414,40 @@ export default function ResumeBuilder() {
             <Link href="/templates">
               <Button variant="outline">Templates</Button>
             </Link>
+            <Link href="/import-export">
+              <Button variant="outline" size="sm">
+                <Upload className="mr-2 h-4 w-4" />
+                Import
+              </Button>
+            </Link>
+            
+            {/* Replace the Export PDF button with a dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm">
+                  <Download className="mr-2 h-4 w-4" />
+                  Export <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleExportPDF}>
+                  PDF (.pdf)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportDOCX}>
+                  Microsoft Word (.docx)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportMD}>
+                  Markdown (.md)
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleExportJSON}>
+                  JSON (.json)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportTXT}>
+                  Plain Text (.txt)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
@@ -286,12 +509,6 @@ export default function ResumeBuilder() {
               
                 <div className="space-x-3">
                   <br></br>
-                  <button
-                    onClick={handleExportPDF}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    Export PDF
-                  </button>
                   <Link
                     href="/review"
                     className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
