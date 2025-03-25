@@ -33,9 +33,12 @@ export function ResumePreview({ data }: ResumePreviewProps) {
   const SelectedTemplate = templates[data.template as keyof typeof templates] || templates.modern
 
   return (
-    <div className="bg-background p-4 shadow-sm">
-      <div className="mx-auto max-w-[800px] overflow-hidden rounded border dark:border-gray-700">
-        <div style={{ backgroundColor: 'white', color: 'black' }} className="[&_*]:!text-black [&_*]:!bg-white [&_h1]:!text-black [&_h2]:!text-black [&_h3]:!text-black [&_p]:!text-black [&_span]:!text-gray-600 [&_.text-gray-600]:!text-gray-600 print:bg-white print:text-black">
+    <div className="bg-background p-2 md:p-4 shadow-sm overflow-hidden">
+      <div className="mx-auto max-w-full overflow-hidden rounded border dark:border-gray-700">
+        <div 
+          style={{ backgroundColor: 'white', color: 'black' }} 
+          className="w-full [&_*]:!text-black [&_*]:!bg-white [&_h1]:!text-black [&_h2]:!text-black [&_h3]:!text-black [&_p]:!text-black [&_span]:!text-gray-600 [&_.text-gray-600]:!text-gray-600 print:bg-white print:text-black"
+        >
           <SelectedTemplate data={data} />
         </div>
       </div>

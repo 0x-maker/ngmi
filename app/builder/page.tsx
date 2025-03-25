@@ -145,30 +145,33 @@ export default function ResumeBuilder() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-        <div className="max-w-screen-md mx-auto px-4 flex h-16 items-center">
-          <div className="mr-4 flex">
-            <Link href="/" className="mr-6 flex items-center space-x-2">
-            <img src="https://storage.verity.dev/storage/ngmi2.png" alt="ResumeBuilder" height={75} width={75} />
+        <div className="container mx-auto px-4 flex h-16 items-center justify-between">
+          <div className="flex">
+            <Link href="/" className="flex items-center space-x-2">
+              <img src="https://storage.verity.dev/storage/NGMI3.png" alt="ResumeBuilder" height={100} width={100} />
             </Link>
           </div>
-          <div className="ml-auto flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
             <ThemeToggle />
+            <Link href="/templates">
+              <Button variant="outline">Templates</Button>
+            </Link>
           </div>
         </div>
       </header>
-      <div className="flex-1 py-8">
-        <div className="max-w-screen-md mx-auto px-4">
-          <h1 className="mb-6 text-3xl font-bold">Start Building Your Resume Bucko</h1>
+      <div className="flex-1 py-6 md:py-8">
+        <div className="container mx-auto px-4">
+          <h1 className="mb-4 md:mb-6 text-2xl md:text-3xl font-bold">Start Building Your Resume Bucko</h1>
           <p className="italic text-muted-foreground mb-4">This Job Ain't Gonna Find Itself</p>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-5">
-                  <TabsTrigger value="personal">Personal</TabsTrigger>
-                  <TabsTrigger value="experience">Experience</TabsTrigger>
-                  <TabsTrigger value="education">Education</TabsTrigger>
-                  <TabsTrigger value="skills">Skills</TabsTrigger>
-                  <TabsTrigger value="projects">Projects</TabsTrigger>
+                <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-5">
+                  <TabsTrigger value="personal" className="flex-1">Personal</TabsTrigger>
+                  <TabsTrigger value="experience" className="flex-1">Experience</TabsTrigger>
+                  <TabsTrigger value="education" className="flex-1">Education</TabsTrigger>
+                  <TabsTrigger value="skills" className="flex-1">Skills</TabsTrigger>
+                  <TabsTrigger value="projects" className="flex-1">Projects</TabsTrigger>
                 </TabsList>
                 <Card className="mt-4 p-4">
                   <TabsContent value="personal">
@@ -214,10 +217,18 @@ export default function ResumeBuilder() {
                 <Download className="h-4 w-4" /> Export as PDF
               </Button>
             </div>
-            <div className="sticky top-24 h-fit">
+            <div className="hidden lg:block lg:sticky lg:top-24 lg:h-fit">
               <h2 className="mb-4 text-xl font-bold">Preview</h2>
               <div className="rounded-lg border bg-background p-1">
                 <div ref={resumeRef}>
+                  <ResumePreview data={resumeData} />
+                </div>
+              </div>
+            </div>
+            <div className="lg:hidden mt-6">
+              <h2 className="mb-4 text-xl font-bold">Preview</h2>
+              <div className="rounded-lg border bg-background p-1 overflow-auto">
+                <div ref={resumeRef} className="transform scale-[0.65] origin-top-left h-[153.85%] w-[153.85%]">
                   <ResumePreview data={resumeData} />
                 </div>
               </div>
@@ -226,11 +237,11 @@ export default function ResumeBuilder() {
         </div>
       </div>
       <footer className="border-t py-6 md:py-0">
-        <div className="max-w-screen-md mx-auto px-4 flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+          <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 text-sm text-muted-foreground">
             <span>© {new Date().getFullYear()}</span>
-            <img src="https://storage.verity.dev/storage/ngmi2.png" alt="NGMI" className="h-8 w-8 inline-block" />
-            <span>Maintained by</span>
+            <img src="https://storage.verity.dev/storage/NGMI3.png" alt="NGMI" className="h-8 w-8 inline-block" />
+            <span>Maintained by <a href="https://praetorian.netlify.app/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center hover:opacity-80 transition-opacity">ᯅ ∴</a></span>
             <a 
               href="https://twitter.com/0xPraetorian" 
               target="_blank" 

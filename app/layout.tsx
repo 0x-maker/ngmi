@@ -3,8 +3,12 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'Resume Builder',
-  description: 'Build professional resumes in minutes',
+  title: 'You Are Jobless',
+  description: 'Build your resume and get a job',
+  icons: {
+    icon: 'https://storage.verity.dev/storage/NGMI3.png',
+    apple: 'https://storage.verity.dev/storage/NGMI3.png',
+  }
 }
 
 export default function RootLayout({
@@ -17,7 +21,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
