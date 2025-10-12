@@ -1,7 +1,7 @@
 #  You Are Jobless 🗿
 
 <div align="center">
-  <img src="https://cdn.verity.dev/storage/NGMI3.png" alt="You Are Jobless Logo" width="120" />
+  <img src="https://cdn2.verity.dev/storage/NGMI3.png" alt="You Are Jobless Logo" width="120" />
   <h3>Create professional resumes in minutes and land your next job!</h3>
   <p><em>Because this job isn't going to find itself.</em></p>
 </div>

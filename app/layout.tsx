@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: 'You Are Jobless',
   description: 'Build your resume and get a job',
   icons: {
-    icon: 'https://cdn.verity.dev/storage/NGMI3.png',
-    apple: 'https://cdn.verity.dev/storage/NGMI3.png',
+    icon: 'https://cdn2.verity.dev/storage/NGMI3.png',
+    apple: 'https://cdn2.verity.dev/storage/NGMI3.png',
   },
   openGraph: {
     title: 'You Are Jobless',

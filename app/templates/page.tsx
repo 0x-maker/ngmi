@@ -42,7 +42,7 @@ export default function TemplatesPage() {
         <div className="container flex h-16 items-center justify-between mx-auto px-4">
           <div className="flex">
             <Link href="/" className="flex items-center space-x-2">
-              <img src="https://cdn.verity.dev/storage/NGMI3.png" alt="ResumeBuilder" height={100} width={100} />
+              <img src="https://cdn2.verity.dev/storage/NGMI3.png" alt="ResumeBuilder" height={100} width={100} />
             </Link>
           </div>
           <div className="flex items-center space-x-4">
@@ -415,7 +415,7 @@ export default function TemplatesPage() {
         <div className="container mx-auto px-4 flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-x-2 text-sm text-muted-foreground">
             <span>© {new Date().getFullYear()}</span>
-            <img src="https://cdn.verity.dev/storage/NGMI3.png" alt="NGMI" className="h-8 w-8 inline-block" />
+            <img src="https://cdn2.verity.dev/storage/NGMI3.png" alt="NGMI" className="h-8 w-8 inline-block" />
             <span>Maintained by <a href="https://praetorian.netlify.app/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center hover:opacity-80 transition-opacity">ᯅ ∴</a></span>
             <a 
               href="https://twitter.com/0xPraetorian" 
@@ -423,7 +423,7 @@ export default function TemplatesPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center hover:opacity-80 transition-opacity"
             >
-              <img src="https://cdn.verity.dev/storage/prae.png" alt="Praetorian" className="h-5 w-5 inline-block" />
+              <img src="https://cdn2.verity.dev/storage/prae.png" alt="Praetorian" className="h-5 w-5 inline-block" />
             </a>
             <span>All rights reserved.</span>
           </div>
