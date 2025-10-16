@@ -33,3 +33,4 @@ AI-FEATURES-PLAN.md
 !test/
 !test/data/
 !test/data/05-versions-space.pdf
+.env
